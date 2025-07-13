@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Most Advanced Cat in the Universe</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(#99d5f8 0%, #fff6da 100%);
+      padding: 0; margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .cat-container {
+      position: relative;
+      width: 360px;
+      height: 400px;
+      user-select: none;
+    }
+    /* CAT BODY */
+    .cat-body {
+      position: absolute;
+      left: 60px; top: 110px;
+      width: 240px; height: 180px;
+      background: #ffe0b2;
+      border-radius: 50% 50% 60px 60px / 60px 60px 160px 160px;
+      box-shadow: 0 8px 0 #f4b076 inset;
+      z-index: 1;
+    }
+    /* CAT HEAD */
+    .cat-head {
+      position: absolute;
+      top: 10px; left: 70px;
+      width: 180px; height: 180px;
+      background: #ffe0b2;
+      border-radius: 50%;
+      box-shadow: 0 6px 0 #f4b076 inset;
+      z-index: 2;
+    }
+    /* EARS */
+    .cat-ear {
+      position: absolute;
+      width: 60px;
+      height: 90px;
+      background: #ffe0b2;
+      transform: rotate(-20deg);
+      top: -20px;
+      z-index: 3;
+      clip-path: polygon(50% 0%, 0 100%, 100% 100%);
+      box-shadow: 0 15px 0 #f4b076 inset;
+    }
+    .cat-ear.left {
+      left: 10px;
+      transform: rotate(-18deg);
+    }
+    .cat-ear.right {
+      left: 110px;
+      transform: scaleX(-1) rotate(-18deg);
+    }
+    /* INNER EARS */
+    .inner-ear {
+      position: absolute;
+      width: 26px; height: 44px;
+      background: #ffd1de;
+      top: 20px; left: 17px;
+      border-radius: 60% 60% 100% 100% / 60% 60% 120% 120%;
+      z-index: 4;
+    }
+    /* EYES */
+    .cat-eye {
+      position: absolute;
+      width: 38px; height: 42px;
+      background: white;
+      border-radius: 44% 43% 46% 44% / 42% 61% 34% 33%;
+      top: 66px;
+      box-shadow: 0 2px 0 #c3965d inset;
+      z-index: 5;
+      overflow: hidden;
+      transition: all 0.25s;
+    }
+    .cat-eye.left { left: 53px; }
+    .cat-eye.right { left: 109px; }
+    /* PUPIL */
+    .cat-pupil {
+      position: absolute;
+      background: #231f20;
+      width: 13px; height: 26px;
+      border-radius: 100px 100px 100px 100px / 60px 60px 60px 60px;
+      left: 12px; top: 10px;
+      transition: all 0.4s cubic-bezier(.17,.67,.83,.67);
+      z-index: 6;
+    }
+    /* BLINK */
+    .cat-eye.blink:before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #ffe0b2;
+      z-index: 10;
+      animation: blink 0.45s;
+      border-radius: 80% 80% 84% 84% / 85% 83% 88% 88%;
+    }
+    @keyframes blink {
+      0%,100% { height: 0; }
+      49% { height: 100%; }
+      51% { height: 100%; }
+    }
+    /* NOSE */
+    .cat-nose {
+      position: absolute;
+      width: 28px; height: 18px;
+      left: 76px; top: 115px;
+      background: #e6926c;
+      border-radius: 45% 45% 60% 60% / 70% 70% 80% 80%;
+      box-shadow: 0 2px 2px #b8794d inset;
+      z-index: 7;
+    }
+    /* MOUTH */
+    .cat-mouth {
+      position: absolute;
+      width: 30px; height: 36px;
+      top: 124px; left: 75px;
+      z-index: 8;
+      pointer-events: none;
+    }
+    .cat-mouth:before, .cat-mouth:after {
+      content: '';
+      position: absolute;
+      border: 2.3px solid #95543c;
+      border-radius: 60px 80px 80px 60px / 40px 60px 80px 100px;
+      width: 14px; height: 16px;
+      top: 1px;
+      background: none;
+    }
+    .cat-mouth:before {
+      left: -2px;
+      border-right: none;
+      border-bottom: 2px solid #95543c;
+      transform: rotate(12deg);
+    }
+    .cat-mouth:after {
+      left: 15px;
+      border-left: none;
+      border-bottom: 2px solid #95543c;
+      transform: rotate(-8deg);
+    }
+    /* WHISKERS */
+    .whiskers {
+      position: absolute;
+      top: 122px; left: 40px;
+      width: 110px; height: 36px;
+      z-index:9;
+      pointer-events: none;
+    }
+    .whisker {
+      position: absolute;
+      width: 48px; height: 2px;
+      background: #a28a5d;
+      border-radius: 2px;
+      opacity: 0.78;
+    }
+    .whisker.left1 { transform: rotate(-12deg); top:6px; left: -36px;}
+    .whisker.left2 { transform: rotate(2deg); top:16px; left:-36px;}
+    .whisker.left3 { transform: rotate(14deg); top:27px; left: -36px;}
+    .whisker.right1 { transform: scaleX(-1) rotate(-12deg); top:6px; left: 92px;}
+    .whisker.right2 { transform: scaleX(-1) rotate(2deg); top:16px; left: 92px;}
+    .whisker.right3 { transform: scaleX(-1) rotate(14deg); top:27px; left:92px;}
+
+    /* TAIL - IMPROVED */
+    .cat-tail {
+      position: absolute;
+      width: 120px;
+      height: 36px;
+      bottom: 105px;
+      left: 260px;
+      background: none;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .cat-tail-shape {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0; top: 0;
+      background: linear-gradient(135deg, #ffe0b2 83%, #f4b076 100%);
+      border-radius: 60% 90% 100% 100% / 100% 90% 100% 80%;
+      box-shadow: 0 8px 16px #efbc73;
+      transform-origin: 10% 60%;
+      animation: tailWag 2.2s infinite cubic-bezier(0.42,0,0.58,1);
+    }
+    @keyframes tailWag {
+      0%, 100% { transform: rotate(20deg) scaleY(1);}
+      25% { transform: rotate(-8deg) scaleY(1.04);}
+      40% { transform: rotate(11deg) scaleY(0.96);}
+      60% { transform: rotate(-15deg) scaleY(1.1);}
+      80% { transform: rotate(25deg) scaleY(0.98);}
+    }
+
+    /* PAWS */
+    .cat-paw {
+      position: absolute;
+      width: 50px; height: 48px;
+      background: #ffe0b2;
+      border-radius: 70% 60% 60% 90% / 90% 80% 100% 100%;
+      box-shadow: 0 10px 15px #dab57d78;
+      z-index: 10;
+      top: 260px;
+    }
+    .cat-paw.left { left: 50px; transform: rotate(-17deg);}
+    .cat-paw.right { left: 184px; transform: scaleX(-1) rotate(-17deg);}
+    /* PAW PADS */
+    .cat-pad {
+      position: absolute;
+      background: #fbad8a;
+      border-radius: 50%;
+      opacity: 0.95;
+    }
+    .cat-pad.large { width: 19px; height: 17px; left: 15px; top: 25px;}
+    .cat-pad.small1 { width: 8px; height: 8px; left: 7px; top: 36px;}
+    .cat-pad.small2 { width: 8px; height: 8px; left: 21px; top: 37px;}
+    .cat-pad.small3 { width: 8px; height: 8px; left: 32px; top: 35px;}
+
+    /* MOOD - HOVER */
+    .cat-head:hover .cat-mouth:before, 
+    .cat-head:hover .cat-mouth:after {
+      border-radius: 60px 10px 60px 60px / 10px 60px 20px 100px;
+    }
+    .cat-head.happy .cat-mouth:before { border-radius: 100px 80px 100px 80px/80px 70px 100px 100px;}
+    .cat-head.sad .cat-mouth:before, .cat-head.sad .cat-mouth:after { border-bottom: 1px solid #95543c;}
+
+    /* MOOD - DISPLAY */
+    .cat-mood {
+      position: absolute;
+      left: 0; top: -40px;
+      width: 100%;
+      text-align: center;
+      font-size: 1.3em;
+      color: #6d492a;
+      text-shadow: 0 2px 0 #ffe0b2, 1px 1px #fffde8;
+      z-index: 11;
+      letter-spacing: 1px;
+      font-weight: 500;
+      pointer-events: none;
+    }
+    /* PET BUTTON */
+    .pet-btn {
+      position: absolute;
+      top: 350px; left: 90px;
+      background: #fbf3e7;
+      border: 2px solid #efbc73;
+      border-radius: 22px;
+      font-size: 1.1em;
+      padding: 13px 28px;
+      box-shadow: 0 6px 12px #f4b07622;
+      color: #b57329;
+      cursor: pointer;
+      transition: background 0.19s;
+      z-index: 30;
+    }
+    .pet-btn:hover { background: #ffe0b2;}
+    @media (max-width: 500px) {
+      .cat-container { transform: scale(0.68);}
+    }
+  </style>
+</head>
+<body>
+<div class="cat-container">
+  <div class="cat-mood" id="catMood">I'm feeling curious 🐾</div>
+  <div class="cat-head" id="catHead">
+    <div class="cat-ear left"><div class="inner-ear"></div></div>
+    <div class="cat-ear right"><div class="inner-ear"></div></div>
+    <div class="cat-eye left" id="eyeL"><div class="cat-pupil" id="pupilL"></div></div>
+    <div class="cat-eye right" id="eyeR"><div class="cat-pupil" id="pupilR"></div></div>
+    <div class="cat-nose"></div>
+    <div class="whiskers">
+      <div class="whisker left1"></div>
+      <div class="whisker left2"></div>
+      <div class="whisker left3"></div>
+      <div class="whisker right1"></div>
+      <div class="whisker right2"></div>
+      <div class="whisker right3"></div>
+    </div>
+    <div class="cat-mouth"></div>
+  </div>
+  <div class="cat-body"></div>
+  <div class="cat-tail" id="catTail">
+    <div class="cat-tail-shape"></div>
+  </div>
+  <div class="cat-paw left">
+    <div class="cat-pad large"></div>
+    <div class="cat-pad small1"></div>
+    <div class="cat-pad small2"></div>
+    <div class="cat-pad small3"></div>
+  </div>
+  <div class="cat-paw right">
+    <div class="cat-pad large"></div>
+    <div class="cat-pad small1"></div>
+    <div class="cat-pad small2"></div>
+    <div class="cat-pad small3"></div>
+  </div>
+  <button class="pet-btn" id="petCatBtn">Pet Me!</button>
+  <audio id="purrSound" src="https://cdn.pixabay.com/audio/2022/03/26/audio_116b9949f5.mp3"></audio>
+</div>
+<script>
+  // Eye movement follow mouse
+  function moveEyes(e) {
+    const cat = document.querySelector('.cat-container');
+    const rect = cat.getBoundingClientRect();
+    const eyes = [{eye: 'eyeL', pupil: 'pupilL'}, {eye:'eyeR', pupil:'pupilR'}];
+    eyes.forEach(({eye, pupil})=>{
+      const eyeElem = document.getElementById(eye);
+      const pupilElem = document.getElementById(pupil);
+      const eyeRect = eyeElem.getBoundingClientRect();
+      // Center of pupil
+      let cx = eyeRect.left + eyeRect.width/2;
+      let cy = eyeRect.top  + eyeRect.height/2;
+      let mx = e.clientX, my = e.clientY;
+      let dx = mx - cx, dy = my - cy;
+      // Limit movement to 10px
+      let dist = Math.min(Math.sqrt(dx*dx+dy*dy), 12);
+      let angle = Math.atan2(dy, dx);
+      let px = Math.cos(angle)*dist;
+      let py = Math.sin(angle)*dist;
+      pupilElem.style.transform = `translate(${px}px,${py}px)`;
+    });
+  }
+  document.addEventListener('mousemove', moveEyes);
+
+  // Blinking
+  function blink() {
+    const eyeL = document.getElementById('eyeL');
+    const eyeR = document.getElementById('eyeR');
+    eyeL.classList.add('blink');
+    eyeR.classList.add('blink');
+    setTimeout(()=>{eyeL.classList.remove('blink'); eyeR.classList.remove('blink');}, 400);
+    setTimeout(blink, Math.random()*4000+2500);
+  }
+  setTimeout(blink, 1900);
+
+  // Mood changing and purr sound
+  const moods = [
+    "I'm feeling curious 🐾",
+    "Purr... I'm happy! 😺",
+    "I'm playful! Throw a toy? 🎉",
+    "So relaxed zzZ 💤",
+    "You are my universe ⭐",
+    "Can I have some tuna? 🐟",
+    "I'm the most advanced cat in HTML! 🚀"
+  ];
+  let moodIndex = 0;
+  const catMood = document.getElementById('catMood');
+  const petBtn = document.getElementById('petCatBtn');
+  const head = document.getElementById('catHead');
+  const purr = document.getElementById('purrSound');
+
+  petBtn.addEventListener('click', () => {
+    // Mood
+    moodIndex = (moodIndex+1) % moods.length;
+    catMood.textContent = moods[moodIndex];
+    // Animation: make cat "smile"
+    head.classList.add('happy');
+    setTimeout(()=>{head.classList.remove('happy')},900);
+    // Sound
+    purr.currentTime = 0; purr.volume=0.25; purr.play();
+  });
+
+  // Tapping head: switch sadness
+  head.addEventListener('dblclick', () => {
+    catMood.textContent = "You double-tapped my head! 😾";
+    head.classList.add('sad');
+    setTimeout(()=>{head.classList.remove('sad')},1600);
+  });
+
+</script>
+</body>
+</html>
